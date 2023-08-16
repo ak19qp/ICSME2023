@@ -78,4 +78,5 @@ Processor: Intel i3 2.5 GHz (need enough to run Firefox smoothly)
 - This script will calculate execution time / wait time of system calls, the functions which made the system calls by analyzing the call stacks, and finally perform enhanced statistical debugging and generate a csv output. You can sort the output based on 'Increase' using MS Excel or LibreOffice Calc to find the ranked list of prospective and suspicious and potentially problematic functions that needs to be monitored for performance issues.
 
 ## Notes
-If the addresses converted to names show no function names, then it is highly likely that the "ac_add_options --enable-perf" option for mozconfig was not correctly done during the firefox build.
+- If the addresses converted to names show no function names, then it is highly likely that the "ac_add_options --enable-perf" option for mozconfig was not correctly done during the firefox build.
+- Address to name translation might take a long time if perf data was too large. We recommend not running perf record for more than 5 seconds for evaluation and review purposes of this artifact.
