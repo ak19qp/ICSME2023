@@ -6,10 +6,10 @@
 - Verify installation by typing in "perf" in the terminal.
 
 2. Firefox:
-- Install Python with the following command in terminal:\
+- Install Python with the following command in the terminal:\
   sudo apt-get install curl python3 python3-pip
   
-- Install Mercurial with the following command in terminal:\
+- Install Mercurial with the following command in the terminal:\
   python3 -m pip install --user mercurial
   
 - Test Mercurial with this command:\
