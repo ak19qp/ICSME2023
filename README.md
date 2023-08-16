@@ -2,12 +2,12 @@
 
 This repository contains the artifact needed to:
 1. Generate Perf data related to kernel events (we will be using system calls as an example) made by applications (we will be using Firefox as an example).
-2. Extract functions from callstack while those kernel events took place.
+2. Extract functions from the call stack while those kernel events took place.
 3. Extract relevant data to calculate the wait time length of those kernel events.
 4. Perform Enhanced Statistical Debugging (ESD) on the extracted data.
 5. Rank the suspicious/problematic application functions responsible for performance issues based on the ESD data.
 
-Usually when a callstack data is read, it will show memory addresses of the functions. This is not useful for debugging in the sense that we do not know which exact function we are looking at. Therefore, these addresses needs to be translated into their function names. This could be done with debugger info enabled with the built and if the binaries are available for the application. We will be using Firefox for this example as they already provide a built-in support for Perf.
+Usually when a call stack data is read, it will show memory addresses of the functions. This is not useful for debugging in the sense that we do not know which exact function we are looking at. Therefore, these addresses need to be translated into their function names. This could be done with debugger info enabled with the build and if the binaries are available for the application. We will be using Firefox for this example as they already provide built-in support for Perf.
 
 ## Minimum System Requirements:
 
@@ -24,10 +24,10 @@ Processor: Intel i3 2.5 GHz (need enough to run Firefox smoothly)
 - Verify installation by typing in "perf" in the terminal.
 
 2. Firefox:
-- Install Python with the following command in terminal:\
+- Install Python with the following command in the terminal:\
   sudo apt-get install curl python3 python3-pip
   
-- Install Mercurial with the following command in terminal:\
+- Install Mercurial with the following command in the terminal:\
   python3 -m pip install --user mercurial
   
 - Test Mercurial with this command:\
@@ -54,7 +54,7 @@ Processor: Intel i3 2.5 GHz (need enough to run Firefox smoothly)
   export IONPERF=ir\
   ./mach run
 
-2. Find the PID of Firefox. Since, Firefox has a lot of child processes, it easier to find it's parent process' PID using the following command:\
+2. Find the PID of Firefox. Since Firefox has a lot of child processes, it is easier to find its parent process' PID using the following command:\
    pstree -p | grep "firefox" | head -1\
    Make sure that you are not copying some other firefox's PID such that you already use Firefox in your PC and it is already running at the same time as the built Firefox.
 
@@ -63,7 +63,7 @@ Processor: Intel i3 2.5 GHz (need enough to run Firefox smoothly)
 
 5. Run some firefox tasks or you may try to replicate some firefox bugs from bugzilla.
 
-6. Once the task has been done, stop Perf record by pressing Ctrl+C. Wait for it to gracefully exit, don't press they keys more than once.
+6. Once the task has been done, stop the Perf record by pressing Ctrl+C. Wait for it to gracefully exit, don't press the keys more than once.
    
 7. Important note only for the artifact evaluation: Remember to NOT run Perf for too long as it will generate lots of data which will take a long time to be processed by the script in this repo. For the purpose of review, we recommend running Perf for no more than 5 seconds. You must also ensure that firefox pid is correctly hooked with the command mentioned in step 4, otherwise it will record huge systemwide data.
 
@@ -73,11 +73,11 @@ Processor: Intel i3 2.5 GHz (need enough to run Firefox smoothly)
 
 8. Open the downloaded script "perf_perser_and_esd.py" from this repo and select a threshold type. Set variable "threshold_type" at the top to 1 to use mean + standard deviation as the threshold that will be used to determine a fail run. Or set it to 2 and then set the value in milliseconds for the variable threshold_value_for_type_2 to use a hardcoded threshold.
 
-9. Finally run the python script using the command in the terminal:\
+9. Finally, run the python script using the command in the terminal:\
   python3 perf_perser_and_esd.py
-- This script will calculate execution time / wait time of system calls, the functions which made the system calls by analyzing the call stacks, and finally perform enhanced statistical debugging and generate a csv output. You can sort the output based on 'Increase' using MS Excel or LibreOffice Calc to find the ranked list of prospective and suspicious and potentially problematic functions that needs to be monitored for performance issues.
+- This script will calculate execution time / wait time of system calls, the functions which made the system calls by analyzing the call stacks, and finally perform enhanced statistical debugging and generate a csv output. You can sort the output based on 'Increase' using MS Excel or LibreOffice Calc to find the ranked list of prospective and suspicious and potentially problematic functions that need to be monitored for performance issues.
 
 ## Notes
 - If the addresses converted to names show no function names, then it is highly likely that the "ac_add_options --enable-perf" option for mozconfig was not correctly done during the firefox build.
-- Address to name translation might take a long time if perf data was too large. We recommend not running perf record for more than 5 seconds for evaluation and review purposes of this artifact.
+- Address to name translation might take a long time if perf data was too large. We recommend not running perf records for more than 5 seconds for evaluation and review purposes of this artifact.
 - Average time to complete ESD as well as address to name translation for roughly 1GB perf script output file is around 1hr. So, it must be kept under 200 MB (by reducing perf record time) for faster review.
