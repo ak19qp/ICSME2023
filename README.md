@@ -61,7 +61,7 @@ Processor: Intel i3 2.5 GHz
 4. Download the script perf_perser_and_esd.py from this repository and save it in a folder. Then open a terminal in that folder directory and run the following commands:\
   `sudo perf record -g -e 'syscalls:sys_*' -p (PID of firefox)`
 
-5. Run some firefox tasks or you may try to replicate some firefox bugs from bugzilla if time permits.
+5. Run some firefox tasks or you may try to replicate some firefox bugs from bugzilla if time permits (however, that will require you to rebuilt the correct Firefox version (mentioned in the bugzilla report) again with the perf option enable).
 
 6. Once the task has been done, stop the Perf record by pressing `Ctrl+C`. Wait for it to gracefully exit, don't press the keys more than once.
    
