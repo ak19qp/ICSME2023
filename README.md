@@ -14,7 +14,7 @@ Usually when a call stack data is read, it will show memory addresses of the fun
 Operating System: Ubuntu 18+\
 RAM: 8GB\
 Storage: 50GB\
-Processor: Intel i3 2.5 GHz (need enough to run Firefox smoothly)
+Processor: Intel i3 2.5 GHz
 
 ## Setup
 
