@@ -80,3 +80,4 @@ Processor: Intel i3 2.5 GHz (need enough to run Firefox smoothly)
 ## Notes
 - If the addresses converted to names show no function names, then it is highly likely that the "ac_add_options --enable-perf" option for mozconfig was not correctly done during the firefox build.
 - Address to name translation might take a long time if perf data was too large. We recommend not running perf record for more than 5 seconds for evaluation and review purposes of this artifact.
+- Average time to complete ESD as well as address to name translation for roughly 1GB perf script output file is around 1hr. So, it must be kept under 200 MB (by reducing perf record time) for faster review.
