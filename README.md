@@ -39,7 +39,7 @@ For data collection, it must be ensured that `Python3`, `Pip` and `Perf` is inst
 1. Python3:
    - First verify if you already have it installed (and the version) by opening a terminal and entering the following command:
      
-     `python3 --version`
+     `python3 --version`\
      If you get an error message then proceed to the installation method below. Else you are all set with Python3.
      
    - To install Python3, type in the following command in terminal:
