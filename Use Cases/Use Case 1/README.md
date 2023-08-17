@@ -2,7 +2,7 @@
 
 In this use case, we will examine a performance bug reported for Firefox within Mozilla's [Bugzilla repository](https://bugzilla.mozilla.org/show_bug.cgi?id=1637586). According to the report, Firefox encounters severe performance degradation during the rendering of CSS animations; a task handled quite competently by its contemporaneous browser counterparts. Despite the initial reporting of this performance bug dating back several years, the issue persistently remains unresolved. The report identifies functions within the GFX Web Renderer class as harboring the malfeasant functions responsible for this issue. Our proposed methodology has successfully corroborated this assertion by detecting the functions from the same culpable class.
 
-## TLDR Note
+## TL;DR Note:
 If you just want to evaluate our `perf_perser_and_esd.py` script without going through the process of building Firefox and recording the perf data, then please download the `pcsdata.txt` file from this case study folder and run the following command in the terminal:
 
 ### For Mean+Stdev as threshold:
