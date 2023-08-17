@@ -60,7 +60,7 @@ For data collection, it must be ensured that `Python3`, `Pip` and `Perf` is inst
    - Ensure if you already have Perf installed by typing in `perf` in the terminal. If you end up with an error message then proceed to the next step.
    - To install Perf, enter the following command in the terminal:
      
-     `sudo apt install linux-tools-common`
+     `sudo apt-get install linux-tools-common`
      
    - To verify the installation, type in `perf` again in the terminal.
 
