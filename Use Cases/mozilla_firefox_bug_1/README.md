@@ -5,9 +5,6 @@ In this use case, we will examine a performance bug reported for Firefox within 
 ## TL;DR Note:
 If you just want to evaluate our `perf_perser_and_esd.py` script without going through the process of building Firefox and recording the perf data, then please follow the TL;DR sections of [Use Case: "ls" Slow Performance in Large Directories](https://github.com/ak19qp/ICSME2023/tree/main/Use%20Cases/ls_bug) or [Use Case: Firefox Tripadvisor.ca CPU Exhaustion Bug](https://github.com/ak19qp/ICSME2023/tree/main/Use%20Cases/mozilla_firefox_bug_2)
 
-The raw perf data of this use case is too huge to complete evaluation within 1hr.
-
-
 ## Use Case Setup
 
 In the context of this use case, we have reproduced the bug reported in the [Bugzilla report](https://bugzilla.mozilla.org/show_bug.cgi?id=1637586). The [3D CSS animation](https://looping-squares.superhi.com/) was repeatedly loaded in Firefox to unveil all potential functions correlated with a system call for performing this task. The Firefox browser employed for this investigation was compiled from the source with the 'perf' flag enabled, thus enabling Just-In-Time (JIT) profiling following the Firefox documentation by Mozilla.
