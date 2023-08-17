@@ -1,18 +1,17 @@
 # PASD: A Performance Analysis Approach Through the Statistical Debugging of Kernel Events
 
+## Authors:
 Mohammed Adib Khan\
 Department of Computer Science\
 Brock University\
 St. Catharines, Canada\
 ak19qp@brocku.ca
 
-
 Morteza Noferesti\
 Department of Computer Science\
 Brock University\
 St. Catharines, Canada\
 mnoferesti@brocku.ca
-
 
 Naser Ezzati-Jivan\
 Department of Computer Science\
