@@ -100,6 +100,7 @@ For a Fixed threshold method `(threshold_type = 2)`, execute the following comma
 
 `python3 perf_perser_and_esd.py 2 [enter threshold here in milliseconds]`
 
+As an example, if 10 was selected as the threshold, then whenever a function experienced a wait time of 10 milliseconds or higher in a system call, those runs would be considered as a fail run and vice versa.
 
 ## Setup
 
