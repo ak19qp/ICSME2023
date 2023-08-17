@@ -107,7 +107,7 @@ Once we have the `esddata` file, which will be in a `comma-separated values (CSV
 
 ## Use Cases
 
-We have provided three of the use case's data mentioned in the paper in this repository. In order to test out the EDS script `(perf_perser_and_esd.py)` the raw perf data has also been attached and each of the use case's instructions have been provided in detail in their individual folder's README file.
+We have provided three of the use case's data mentioned in the paper in this repository. In order to test out the EDS script `(perf_perser_and_esd.py)` the raw perf data along with each of the use case's instructions have been provided in detail in their individual folder's README file.
 
 
 
