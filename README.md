@@ -84,11 +84,21 @@ Once sufficient tasks has been performed and enough data has been collected, the
 When you have the perf.data file ready in the directory, then execute the following command in the terminal:
 
 `sudo perf script > [give it a file name]`\
-This will convert the perf data into human readable call stack data.
+This will convert the perf data into human readable call stack data. For referencing to the next sections, we will name this file as `pcsdata` representing perf call stack data.
 
 
+### Enhanced Statistical Debugging (ESD)
+For performing ESD, we need the `pcsdata` file, a threshold method (1. Mean+Stdv, 2. Fixed) and the `perf_perser_and_esd.py` python script from this repository.
 
+For Mean+Stdv threshold method `(threshold_type = 1)`, execute the following command in the terminal:
 
+`python3 perf_perser_and_esd.py 1`
+
+Here the threshold that defines success and fail runs will be decided based on the individual function's mean+stdv of their overall wait time in the sample data.
+
+For a Fixed threshold method `(threshold_type = 2)`, execute the following command in the terminal:
+
+`python3 perf_perser_and_esd.py 2 [enter threshold here in milliseconds]`
 
 
 ## Setup
