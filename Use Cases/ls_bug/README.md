@@ -1,6 +1,6 @@
 # Use Case: "ls" Slow Performance in Large Directories
 
-In this case study, we investigated a performance bug that arises from the usage of the 'ls' command in Linux, which is a component of the GNU Core Utilities package. The 'ls' command is a commonly used command-line utility in Unix-like operating systems. Its purpose is to display a list of files and directories within a specified directory or the current working directory. When executed without any arguments, 'ls' will present the contents of the current directory, providing a concise listing that includes the names of files and directories.
+In this use case, we investigated a performance bug that arises from the usage of the 'ls' command in Linux, which is a component of the GNU Core Utilities package. The 'ls' command is a commonly used command-line utility in Unix-like operating systems. Its purpose is to display a list of files and directories within a specified directory or the current working directory. When executed without any arguments, 'ls' will present the contents of the current directory, providing a concise listing that includes the names of files and directories.
 
 Reports on various online discussion platforms: [serverfault](https://serverfault.com/questions/316951/why-might-ls-color-always-be-slow-for-a-small-directory), [superuser](https://superuser.com/questions/1345268/ls-command-very-slow) as well as RedHat BugZilla reports: [1](https://bugzilla.redhat.com/show_bug.cgi?id=1290036), [2](https://bugzilla.redhat.com/show_bug.cgi?id=467508), have indicated that 'ls' exhibits significant slowness when dealing with directories containing a large number of files and folders. Furthermore, it is also slow when handling a large number of top-level entries. This issue specifically arises when color coding is enabled for the 'ls' command.
 
@@ -17,7 +17,7 @@ Once the file has been unzipped the execute the following command from the `perf
 ### For fixed threshold:
 `python3 perf_perser_and_esd.py case_study_3.txt esddata.csv 2 [enter threshold in milliseconds]`
 
-## Case Study Setup & Data Collection
+## Use Case Setup & Data Collection
 
 For this use case, we began by installing the libc6-dbg package using the command 'sudo apt-get install libc6-dbg'. This ensured that the libc compiler had debugger information available for the compiled program. We also installed the build-essential package in the same manner to facilitate the building process. Subsequently, we downloaded the source code of the GNU Core Utilities package and proceeded to extract and compile it with debugger information enabled.
 
@@ -33,7 +33,7 @@ Next we executed the script using the command:
 
 `python3 perf_perser_and_esd.py case_study_3.txt esddata.csv 1`
 
-The `esddata.csv` file is then opened with MS Excel and the unique functions were then sorted based on their 'Increase' value and ranked accordingly. Table III highlights the culprit functions identified from the sorted ranked list. The results of this case study emphasize the significance of not disregarding functions with negative 'Increase' values. While `__GI___statfs` is not directly part of the ls class's code, it is the top-ranked function in the list. On the other hand, `do_lstat` is a direct function from the ls class and exhibits a negative 'Increase' value. It is worth noting that ls executes statfs through `do_lstat`, and the issue lies not in statfs itself, but rather in how `do_lstat` calls statfs.
+The `esddata.csv` file is then opened with MS Excel and the unique functions were then sorted based on their 'Increase' value and ranked accordingly. Table III highlights the culprit functions identified from the sorted ranked list. The results of this use case emphasize the significance of not disregarding functions with negative 'Increase' values. While `__GI___statfs` is not directly part of the ls class's code, it is the top-ranked function in the list. On the other hand, `do_lstat` is a direct function from the ls class and exhibits a negative 'Increase' value. It is worth noting that ls executes statfs through `do_lstat`, and the issue lies not in statfs itself, but rather in how `do_lstat` calls statfs.
 
 ![Table: Results](https://github.com/ak19qp/ICSME2023/blob/main/Use%20Cases/ls_bug/cs3_table.PNG)
 
