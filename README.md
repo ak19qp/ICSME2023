@@ -1,13 +1,41 @@
 # PASD: A Performance Analysis Approach Through the Statistical Debugging of Kernel Events
 
-This repository contains the artifact needed to:
-1. Generate Perf data related to kernel events (we will be using system calls as an example) made by applications (we will be using Firefox as an example).
-2. Extract functions from the call stack while those kernel events took place.
-3. Extract relevant data to calculate the wait time length of those kernel events.
-4. Perform Enhanced Statistical Debugging (ESD) on the extracted data.
-5. Rank the suspicious/problematic application functions responsible for performance issues based on the ESD data.
+Mohammed Adib Khan\
+Department of Computer Science\
+Brock University\
+St. Catharines, Canada\
+ak19qp@brocku.ca
 
-Usually when a call stack data is read, it will show memory addresses of the functions. This is not useful for debugging in the sense that we do not know which exact function we are looking at. Therefore, these addresses need to be translated into their function names. This could be done with debugger info enabled with the build and if the binaries are available for the application. We will be using Firefox for this example as they already provide built-in support for Perf.
+
+Morteza Noferesti\
+Department of Computer Science\
+Brock University\
+St. Catharines, Canada\
+mnoferesti@brocku.ca
+
+
+Naser Ezzati-Jivan\
+Department of Computer Science\
+Brock University\
+St. Catharines, Canada\
+nezzati@brocku.ca
+
+## Abstract:
+Dynamic performance analysis is vital for optimizing systems and finding performance bottlenecks. Traditional debugging struggles to locate issues in complex software due to hidden performance problems during execution. This artifact uses PASD (Performance Analysis through Statistical Debugging), which analyzes kernel-level trace events without altering application code. It identifies key functions causing performance problems, maintaining normal software operations, and avoiding added complexity. PASD offers deep insights into kernel-level behavior, helping developers pinpoint bottlenecks, enhance efficiency, and improve software quality, user satisfaction, and system stability.
+
+## This repository contains the artifact needed to:
+
+### Data Collection:
+- Record kernel events and their relevant call stacks.
+- Extract functions from the call stacks.
+- Extract relevant data to calculate the wait time of those kernel events and thereby the wait time of the functions themselves.
+
+### Performance Debugging:
+- Define threshold to differentiate success and fail runs.
+- Find fail, fail observed, success and success ovserved for each unique functions.
+- Perform Enhanced Statistical Debugging (ESD) on the functions' data.
+- Rank the suspicious/problematic application functions responsible for performance issues based on the ESD data.
+
 
 ## Minimum System Requirements:
 
