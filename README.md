@@ -38,21 +38,30 @@ For data collection, it must be ensured that `Python3`, `Pip` and `Perf` is inst
 
 1. Python3:
    - First verify if you already have it installed (and the version) by opening a terminal and entering the following command:
+     
      `python3 --version`
      If you get an error message then proceed to the installation method below. Else you are all set with Python3.
+     
    - To install Python3, type in the following command in terminal:
+     
      `sudo apt update`
+     
      `sudo apt install python3`
+     
     - Once Python3 is installed, proceed to install pip if it is already not present. You can verify this by typing in `pip` in the terminal.
 2. Pip:
    - Open terminal and enter this command:
+     
      `sudo apt-get install curl python3 python3-pip`
+     
    - Verify installation by typing in `pip` in the terminal.
 
 3. Perf:
    - Ensure if you already have Perf installed by typing in `perf` in the terminal. If you end up with an error message then proceed to the next step.
    - To install Perf, enter the following command in the terminal:
+     
      `sudo apt install linux-tools-common`
+     
    - To verify the installation, type in `perf` again in the terminal.
 
 ### Performance Debugging
