@@ -49,20 +49,20 @@ In the context of this case study, we have reproduced the bug reported in the [B
    Make sure that you are not copying some other firefox's PID such that you already use Firefox in your PC and it is already running at the same time as running the built Firefox.
 
 2. Download the script `perf_perser_and_esd.py` from this repository and save it in a folder. Then open a terminal in that folder directory and execute the following command:
+
+   `sudo perf record -g -e 'syscalls:sys_*' -p [PID of firefox]`
+
+4. Replicate the bug mentioned in the [bugzilla repository](https://bugzilla.mozilla.org/show_bug.cgi?id=1637586).
+
+5. Once the task has been done, stop Perf record by pressing `Ctrl+C`. Wait for it to gracefully exit, don't press the keys more than once.
    
-  `sudo perf record -g -e 'syscalls:sys_*' -p [PID of firefox]`
+6. Important note only for the artifact evaluation: Remember to NOT run Perf for too long as it will generate lots of data which will take a long time to be processed by the script. For the purpose of review, we recommend running Perf for no more than 5 seconds. You must also ensure that firefox pid is correctly hooked, otherwise it will record huge system-wide data.
 
-3. Replicate the bug mentioned in the [bugzilla repository](https://bugzilla.mozilla.org/show_bug.cgi?id=1637586).
-
-4. Once the task has been done, stop Perf record by pressing `Ctrl+C`. Wait for it to gracefully exit, don't press the keys more than once.
-   
-5. Important note only for the artifact evaluation: Remember to NOT run Perf for too long as it will generate lots of data which will take a long time to be processed by the script. For the purpose of review, we recommend running Perf for no more than 5 seconds. You must also ensure that firefox pid is correctly hooked, otherwise it will record huge system-wide data.
-
-6. Now run the following commands in the terminal to convert the perf data into readable text:\
+7. Now run the following commands in the terminal to convert the perf data into readable text:\
    `sudo perf script > [give a name to the output file]`\
    Assuming the output file name is `pcsdata` to reference with the next sections.
 
-7. For performing Enhanced Statistical Debugging (ESD), we need the `pcsdata` file, a threshold method (1. Mean+Stdv, 2. Fixed) and the `perf_perser_and_esd.py` python script from this repository.
+9. For performing Enhanced Statistical Debugging (ESD), we need the `pcsdata` file, a threshold method (1. Mean+Stdv, 2. Fixed) and the `perf_perser_and_esd.py` python script from this repository.
    - For Mean+Stdv threshold method `(threshold_type = 1)`, execute the following command in the terminal:
      
      `python3 perf_perser_and_esd.py [pcsdata/input file name] [output file name] 1`\
