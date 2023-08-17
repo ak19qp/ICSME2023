@@ -1,91 +1,47 @@
-# Case Study 1: Firefox CSS Animation Rendering Bug
+# Use Case: Firefox Tripadvisor.ca CPU Exhaustion Bug
 
-In this use case, we will examine a performance bug reported for Firefox within Mozilla's [Bugzilla repository](https://bugzilla.mozilla.org/show_bug.cgi?id=1637586). According to the report, Firefox encounters severe performance degradation during the rendering of CSS animations; a task handled quite competently by its contemporaneous browser counterparts. Despite the initial reporting of this performance bug dating back several years, the issue persistently remains unresolved. The report identifies functions within the GFX Web Renderer class as harboring the malfeasant functions responsible for this issue. Our proposed methodology has successfully corroborated this assertion by detecting the functions from the same culpable class.
+In this use case, we analyze a performance bug reported in [Bugzilla](https://bugzilla.mozilla.org/show\_bug.cgi?id=1565019) in 2019, which pertains to an extraordinary elevation in CPU usage while loading the website [tripadvisor.ca](https://tripadvisor.ca) in the Firefox browser. The report indicates that the main thread monopolizes CPU resources for a protracted duration. In our experimental environment, designed to replicate this bug, we experienced system-wide crashes on multiple occasions, attributable to resource exhaustion.
 
 ## TL;DR Note:
-If you just want to evaluate our `perf_perser_and_esd.py` script without going through the process of building Firefox and recording the perf data, then please download the `pcsdata.txt` file from this case study folder and run the following command in the terminal:
+
+If you just want to evaluate our `perf_perser_and_esd.py` script without going through the process of building Firefox and recording the perf data, then please download the data folder from this use case folder and run the following command in the terminal from within the data folder directory:
+
+`cat case_study_2_* > case_study_2.tar.gz`
+
+`tar -xvf case_study_2.tar.gz`
+
+Once the file has been unzipped the execute the following command from the `perf_perser_and_esd.py` file's directory:
 
 ### For Mean+Stdev as threshold:
-`python3 perf_perser_and_esd.py pcsdata.txt esddata.csv 1`
+`python3 perf_perser_and_esd.py case_study_2.txt esddata.csv 1`
 
 ### For fixed threshold:
-`python3 perf_perser_and_esd.py pcsdata.txt esddata.csv 2 [enter threshold here in milliseconds]`
+`python3 perf_perser_and_esd.py case_study_2.txt esddata.csv 2 [enter threshold in milliseconds]`
 
 
-## Case Study Setup
+## Case Study Setup & Data collection
 
-In the context of this case study, we have reproduced the bug reported in the [Bugzilla report](https://bugzilla.mozilla.org/show_bug.cgi?id=1637586). The [3D CSS animation](https://looping-squares.superhi.com/) was repeatedly loaded in Firefox to unveil all potential functions correlated with a system call for performing this task. The Firefox browser employed for this investigation was compiled from the source with the 'perf' flag enabled, thus enabling Just-In-Time (JIT) profiling following the Firefox documentation by Mozilla.
+In an approach similar to the previous Firefox [use case](https://github.com/ak19qp/ICSME2023/tree/main/Use%20Cases/mozilla_firefox_bug_1), the experimental setup entailed compiling Firefox from the source with the 'Perf' tag enabled. 'Perf' was employed to capture call stack data associated with system call events hooked to the Firefox PID. The website tripadvisor.ca was loaded recurrently to accumulate sufficient call stack data.
 
-### Setting-up Firefox:
-
-- Install Mercurial with the following command in the terminal (must have pip installed):
-  
-  `python3 -m pip install --user mercurial`
-  
-- Test Mercurial with this command:
-  
-  `hg version`
-  
-- Bootstrap a copy of the Firefox source code with these commands in terminal (make sure to cd to the location where you want to download first):
-  
-  `curl https://hg.mozilla.org/mozilla-central/raw-file/default/python/mozboot/bin/bootstrap.py -O`\
-  `python3 bootstrap.py`
-  
-- Build Firefox:
-
-  First modify the mozconfig file in the downloaded source folder by adding `ac_add_options --enable-perf` in the file. If the `mozconfig` file is not present then create an empty file named "mozconfig" and put in the command there.\
-  Now execute these commands inside the root directory of the source folder:\
-  `hg up -C central`\
-  `./mach build`
-
-- To run this built Firefox execute the following commands in the terminal:
-
-  `export IONPERF=ir`\
-  `./mach run`
-
-#### Official Firefox build guides:
-
-- [Linux Build](https://firefox-source-docs.mozilla.org/setup/linux_build.html)
-- [JIT Profiling](https://firefox-source-docs.mozilla.org/performance/jit_profiling_with_perf.html)
-- [Configuring Build Options](https://firefox-source-docs.mozilla.org/setup/configuring_build_options.html)
+The call stack data collected in this study were analyzed to identify unique function names and their associated wait times for different system calls. The task of the experiment was carried out multiple times over 110 seconds. A total amount of 1.23 GB of data containing 398297 call stacks was collected, sufficient to deliver meaningful insights into the wait time of unique functions during system calls.
 
 
+## Analysis & Discussion
 
-### Data collection:
+Implementing statistical debugging on the collated data for individual functions, and then ranking them by the 'Increase' value followed by a cut-off of 15% of the list, reveals three significant function calls across multiple addresses in the list. This implies their execution by distinct threads. These functions are `gethostbyaddr_r@@GLIBC_2.2.5`, `pthread_cond_signal@@GLIBC_2.3.2`, and `getifaddrs_internal`.
 
-1. Find the PID of Firefox. Since Firefox has a lot of child processes, it is easier to find its parent process' PID using the following command:\
-   `pstree -p | grep "firefox" | head -1`\
-   Make sure that you are not copying some other firefox's PID such that you already use Firefox in your PC and it is already running at the same time as running the built Firefox.
+The function `gethostbyaddr_r` is entrusted with reverse Domain Name System (DNS) resolution and is a thread-safe variant of the gethostbyaddr function. The function `pthread_cond_signal`, an integral part of the POSIX threads (pthreads) library, provides a parallel programming interface grounded in threads for Unix-like operating systems. This function is employed for thread synchronization, facilitating threads to await the fulfillment of a specific condition. Lastly, the `getifaddrs_internal` function retrieves data regarding the network interfaces available on the system, such as their IP addresses, network masks, and interface names. It allocates memory for a linked list of struct ifaddrs structures, each encapsulating information about an interface.
 
-2. Download the script `perf_perser_and_esd.py` from this repository and save it in a folder. Then open a terminal in that folder directory and execute the following command:
-
-   `sudo perf record -g -e 'syscalls:sys_*' -p [PID of firefox]`
-
-4. Replicate the bug mentioned in the [bugzilla repository](https://bugzilla.mozilla.org/show_bug.cgi?id=1637586).
-
-5. Once the task has been done, stop Perf record by pressing `Ctrl+C`. Wait for it to gracefully exit, don't press the keys more than once.
-   
-6. Important note only for the artifact evaluation: Remember to NOT run Perf for too long as it will generate lots of data which will take a long time to be processed by the script. For the purpose of review, we recommend running Perf for no more than 5 seconds. You must also ensure that firefox pid is correctly hooked, otherwise it will record huge system-wide data.
-
-7. Now run the following commands in the terminal to convert the perf data into readable text:\
-   `sudo perf script > [give a name to the output file]`\
-   Assuming the output file name is `pcsdata` to reference with the next sections.
-
-9. For performing Enhanced Statistical Debugging (ESD), we need the `pcsdata` file, a threshold method (1. Mean+Stdv, 2. Fixed) and the `perf_perser_and_esd.py` python script from this repository.
-   - For Mean+Stdv threshold method `(threshold_type = 1)`, execute the following command in the terminal:
-     
-     `python3 perf_perser_and_esd.py [pcsdata/input file name] [output file name] 1`\
-     Here the threshold that defines success and fail runs will be decided based on the individual function's mean+stdv of their overall wait time in the sample data.
-   - For a Fixed threshold method `(threshold_type = 2)`, execute the following command in the terminal:
-     `python3 perf_perser_and_esd.py [pcsdata/input file name] [output file name] 2 [enter threshold here in milliseconds]`\
-     As an example, if 10 was selected as the threshold, then whenever a function experienced a wait time of 10 milliseconds or higher in a system call, those runs would be considered as a fail run and vice versa.
-   - For referencing to the next section, we will be using `esddata.csv` as the output file name.
+When the functions are sorted based on the highest standard deviation and mean, `std::panicking::try` and `std::panic::catch_unwind` appear prominently on the list. Along with these, multiple function calls from the class `mozilla::net::nsSocketTransportService`, responsible for network layer communications, are also found towards the top of the list. This analysis provides insights into the functions potentially contributing to the observed performance issues.
 
 
-### Analysis
-Once we have the `esddata.csv` file, which will be in a `comma-separated values (CSV)` format, this file could be opened in MS Excel or LibreOffice Calc to visualize and perform sorting. Once it is loaded in a spread sheet viewing tool, you can sort (in descending order) the output based on `Increase` to find the ranked list of prospective, suspicious and potentially problematic functions that need to be monitored for performance issues. This `esddata` file could also be used with other scripts for performing your own analysis.
+![Table: Results](https://github.com/ak19qp/ICSME2023/blob/main/Use%20Cases/mozilla_firefox_bug_2/cs2_table.PNG)
 
-## Notes
-- If the addresses converted to names show no function names, then it is highly likely that the `ac_add_options --enable-perf` option for mozconfig was not correctly setup during the firefox build.
-- Address to name translation might take a long time if perf data was too large. We recommend not running `perf record` for more than 5 seconds for evaluation and review purposes of this artifact.
-- Average time to complete ESD as well as address to name translation for roughly 1GB perf script output file is around 1hr. So, it must be kept under 200 MB (by reducing perf record time) for faster review.
+
+Upon meticulous examination of our results, it becomes apparent that the performance issue is intrinsically tied to network layer communication. The website tripadvisor.ca operates with a substantial assortment of interconnected websites and URLs, which it references to populate its content.
+
+Table II highlights the culprit functions from the sorted ranked list of candidate functions. Our analysis, derived from statistical debugging, indicates that the parent thread commissions numerous child threads to retrieve various data from different URLs during the loading of tripadvisor.ca. Given that `pthread_cond_signal` exhibits an extended system call wait time concurrent with the network-related functions, it can be inferred that a failure occurs at the code level. This inference is supported by the activation of `std::panicking::try` and `std::panic::catch_unwind`.
+
+We postulate that, amidst this failure, the catch block perpetually generates new threads to reattempt the same task. It is during this period that the CPU usage escalates dramatically. This relentless cycle of creating and terminating threads to retry the same task persists for an extended duration causing performance bottleneck and CPU resource exhaustion.
+
+Our analysis gains further validation from the bug report, which attributes the occurrence of this issue to a dependency on off-main-thread (OMT) networking. The report further indicates an extensive array of processes transpiring on the main thread, with a majority triggered by initiating network requests. This correlation corroborates the findings from our method, bolstering our analysis that network-related functions play a significant role in this performance issue.
