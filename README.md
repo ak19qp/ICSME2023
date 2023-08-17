@@ -61,9 +61,7 @@ For performance debugging, the application that needs to be analyzed has to be s
 1. Setup the application accordingly so that call stack data could be translated to the function names.
 2. Download the python script `perf_perser_and_esd.py` from this repository into a folder (put it in the same folder where you would want to store your perf record data).
 
-Some resources to translate addresses to function names:
-[addr2line](https://manpages.ubuntu.com/manpages/focal/en/man1/alpha-linux-gnu-addr2line.1.html)
-[nm](https://www.ibm.com/docs/en/zos/2.5.0?topic=scd-nm-display-symbol-table-object-library-executable-files)
+Some resources to translate addresses to function names: [addr2line](https://manpages.ubuntu.com/manpages/focal/en/man1/alpha-linux-gnu-addr2line.1.html), [nm](https://www.ibm.com/docs/en/zos/2.5.0?topic=scd-nm-display-symbol-table-object-library-executable-files).
 
 
 
