@@ -118,9 +118,9 @@ Once we have the `esddata` file, which will be in a `comma-separated values (CSV
 
 We have provided three of the use case's data mentioned in the paper in this repository. In order to test out the EDS script `(perf_perser_and_esd.py)` the raw perf data along with each of the use case's instructions have been provided in detail in their individual folder's README file.
 
-[Use Case: "ls" Slow Performance in Larger Directories](https://github.com/ak19qp/ICSME2023/tree/main/Use%20Cases/Use%20Case%201)\
-[Use Case: Firefox Tripadvisor.ca CPU Exhaustion Bug](https://github.com/ak19qp/ICSME2023/tree/main/Use%20Cases/Use%20Case%202)\
-[Use Case: Firefox CSS Animation Rendering Bug](https://github.com/ak19qp/ICSME2023/tree/main/Use%20Cases/Use%20Case%203)
+Use Case: ["ls" Slow Performance in Larger Directories](https://github.com/ak19qp/ICSME2023/tree/main/Use%20Cases/Use%20Case%201)\
+Use Case: [Firefox Tripadvisor.ca CPU Exhaustion Bug](https://github.com/ak19qp/ICSME2023/tree/main/Use%20Cases/Use%20Case%202)\
+Use Case: [Firefox CSS Animation Rendering Bug](https://github.com/ak19qp/ICSME2023/tree/main/Use%20Cases/Use%20Case%203)
 
 ## Authors:
 Mohammed Adib Khan\
