@@ -15,13 +15,48 @@ Dynamic performance analysis is vital for optimizing systems and finding perform
 - Perform Enhanced Statistical Debugging (ESD) on the functions' data.
 - Rank the suspicious/problematic application functions responsible for performance issues based on the ESD data.
 
+## Requirements
 
-## Minimum System Requirements:
+### Minimum System Requirements:
 
 Operating System: Ubuntu 18+\
 RAM: 8GB\
 Storage: 50GB\
 Processor: Intel i3 2.5 GHz
+
+### Software Requirements:
+
+Perf (Linux Perf)\
+Firefox built with perf options enabled\
+Python3\
+Pip for Python package installations
+
+## Environment Setup
+
+### Data Collection
+For data collection, it must be ensured that `Python3`, `Pip` and `Perf` is installed in the machine. Below are the instructions to set them up for Ubuntu:
+
+1. Python3:
+   - First verify if you already have it installed (and the version) by opening a terminal and entering the following command:
+     `python3 --version`
+     If you get an error message then proceed to the installation method below. Else you are all set with Python3.
+   - To install Python3, type in the following command in terminal:
+     `sudo apt update`
+     `sudo apt install python3`
+    - Once Python3 is installed, proceed to install pip if it is already not present. You can verify this by typing in `pip` in the terminal.
+2. Pip:
+  - Open terminal and enter this command:\
+    `sudo apt-get install curl python3 python3-pip`
+  - Verify installation by typing in `pip` in the terminal.
+
+3. Perf:
+   - Ensure if you already have Perf installed by typing in `perf` in the terminal. If you end up with an error message then proceed to the next step.
+   - To install Perf, enter the following command in the terminal:
+     `sudo apt install linux-tools-common`
+   - To verify the installation, type in `perf` again in the terminal.
+
+### Performance Debugging
+For performance debugging, the application that needs to be analyzed has to be setup with debugger info/symbols enabled (which can be done if you have access to its binaries), or the application compilation method must support perf options. Without either of them performance debugging becomes difficult as we will not have access to the names of the functions from the call stack data, but rather the hex address values of those functions in the memory at the time of data collection.
 
 ## Setup
 
