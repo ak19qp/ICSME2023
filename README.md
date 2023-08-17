@@ -108,6 +108,12 @@ For referencing to the next section, we will be using `esddata` as the output fi
 Once we have the `esddata` file, which will be in a `comma-separated values (CSV)` format, this file could be opened in MS Excel or LibreOffice Calc to visualize and perform sorting. Once it is loaded in a spread sheet viewing tool, you can sort the output based on `Increase` (in descending order) to find the ranked list of prospective, suspicious and potentially problematic functions that need to be monitored for performance issues.
 
 
+## Use Cases
+
+We have provided three of the use case's data mentioned in the paper in this repository. In order to test out the EDS script `(perf_perser_and_esd.py)` the raw perf data has also been attached and each of the use case's instructions have been provided in detail in their individual folder's README file.
+
+
+
 ## Setup
 
 1. Perf:
