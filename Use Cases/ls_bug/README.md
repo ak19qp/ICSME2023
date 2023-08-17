@@ -5,7 +5,7 @@ In this use case, we investigated a performance bug that arises from the usage o
 Reports on various online discussion platforms: [serverfault](https://serverfault.com/questions/316951/why-might-ls-color-always-be-slow-for-a-small-directory), [superuser](https://superuser.com/questions/1345268/ls-command-very-slow) as well as RedHat BugZilla reports: [1](https://bugzilla.redhat.com/show_bug.cgi?id=1290036), [2](https://bugzilla.redhat.com/show_bug.cgi?id=467508), have indicated that 'ls' exhibits significant slowness when dealing with directories containing a large number of files and folders. Furthermore, it is also slow when handling a large number of top-level entries. This issue specifically arises when color coding is enabled for the 'ls' command.
 
 ## TL;DR Note:
-If you just want to evaluate our `perf_perser_and_esd.py` script without going through the process of building ls and recording the perf data, then please download the data folder from this use case folder and run the following command in the terminal from within the data folder directory:
+If you just want to evaluate our `perf_perser_and_esd.py` script without going through the process of building ls and recording the perf data, then please download the data folder from this use case folder which already contains the perf data for this use case and run the following command in the terminal from within the data folder directory:
 
 `tar -xvf case_study_3.tar.gz`
 
