@@ -70,15 +70,18 @@ Some resources to translate addresses to function names: [addr2line](https://man
 - Our script currently support system calls, however, it could be easily extended to support various other kernel events. Therefore, for data collection we will show an example to collect system calls and their relevant call stack data with perf below.
 
 - Open a terminal in the directory where you have downloaded the `perf_perser_and_esd.py` python script. We need to find the PID of the application that we want to collect data for which can be done multiple different ways. Here is a simple way to do so:
+  
   `pstree -p | grep "[Application/process name goes here]" | head -1`
 
 - Then copy the PID of the parent PID and lets move on to start Perf:
+  
   `sudo perf record -g -e 'syscalls:sys_*' -p [PID goes here]`\
   This ensures that you are not recording system-wide data, but only the relevant application data. If you need to collect system-wide data (which I doubt you would), then remote the `-p` argument from the command.
 
 - Once sufficient tasks has been performed and enough data has been collected, then stop the recording by pressing `Ctrl`+`C`. Make sure it gracefully exits so that perf could write all the data and not miss out on writing some events. So, ensure that you do not keep on pressing `Ctrl`+`C` more than once.
 
 - When you have the perf.data file ready in the directory, then execute the following command in the terminal:
+  
   `sudo perf script > [give it a file name]`\
   This will convert the perf data into human readable call stack data. For referencing to the next sections, we will name this file as `pcsdata` representing perf call stack data.
 
