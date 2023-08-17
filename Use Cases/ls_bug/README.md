@@ -33,39 +33,14 @@ Next we executed the script using the command:
 
 `python3 perf_perser_and_esd.py case_study_3.txt esddata.csv 1`
 
-The `esddata.csv` file is then opened with MS Excel and the unique functions were then sorted based on their 'Increase' value and ranked accordingly.
+The `esddata.csv` file is then opened with MS Excel and the unique functions were then sorted based on their 'Increase' value and ranked accordingly. Table III highlights the culprit functions identified from the sorted ranked list. The results of this case study emphasize the significance of not disregarding functions with negative 'Increase' values. While `__GI___statfs` is not directly part of the ls class's code, it is the top-ranked function in the list. On the other hand, `do_lstat` is a direct function from the ls class and exhibits a negative 'Increase' value. It is worth noting that ls executes statfs through `do_lstat`, and the issue lies not in statfs itself, but rather in how `do_lstat` calls statfs.
 
 ![Table: Results](https://github.com/ak19qp/ICSME2023/blob/main/Use%20Cases/ls_bug/cs3_table.PNG)
 
-2. Download the script `perf_perser_and_esd.py` from this repository and save it in a folder. Then open a terminal in that folder directory and execute the following command:
+Upon analyzing the results from the ranked list of functions, we can observe that `__GI___statfs` appears as the top candidate. This finding is consistent with the information provided in the answer from [superuser](https://superuser.com/questions/1345268/ls-command-very-slow), which states that individual statfs calls are made to gather information about the type of file, permissions, and file capabilities for the purpose of setting colors accordingly. This aligns with our observations from the ranked list.
 
-   `sudo perf record -g -e 'syscalls:sys_*' -p [PID of firefox]`
+Furthermore, upon conducting further analysis, we discovered two significant functions: `do_lstat` and `print_color_indicator`, as indicated in Table III. Upon reviewing the ls source code, we found that `do_lstat` is the function responsible for calling the `statfs` function and determining whether color codings are required, utilizing the `print_color_indicator` function. When color coding is enabled, `do_lstat` needs to retrieve additional metadata related to each files and folders, which ultimately contributes to the performance problem. This discovery identifies the actual cause of the performance issue.
 
-4. Replicate the bug mentioned in the [bugzilla repository](https://bugzilla.mozilla.org/show_bug.cgi?id=1637586).
-
-5. Once the task has been done, stop Perf record by pressing `Ctrl+C`. Wait for it to gracefully exit, don't press the keys more than once.
-   
-6. Important note only for the artifact evaluation: Remember to NOT run Perf for too long as it will generate lots of data which will take a long time to be processed by the script. For the purpose of review, we recommend running Perf for no more than 5 seconds. You must also ensure that firefox pid is correctly hooked, otherwise it will record huge system-wide data.
-
-7. Now run the following commands in the terminal to convert the perf data into readable text:\
-   `sudo perf script > [give a name to the output file]`\
-   Assuming the output file name is `pcsdata` to reference with the next sections.
-
-9. For performing Enhanced Statistical Debugging (ESD), we need the `pcsdata` file, a threshold method (1. Mean+Stdv, 2. Fixed) and the `perf_perser_and_esd.py` python script from this repository.
-   - For Mean+Stdv threshold method `(threshold_type = 1)`, execute the following command in the terminal:
-     
-     `python3 perf_perser_and_esd.py [pcsdata/input file name] [output file name] 1`\
-     Here the threshold that defines success and fail runs will be decided based on the individual function's mean+stdv of their overall wait time in the sample data.
-   - For a Fixed threshold method `(threshold_type = 2)`, execute the following command in the terminal:
-     `python3 perf_perser_and_esd.py [pcsdata/input file name] [output file name] 2 [enter threshold here in milliseconds]`\
-     As an example, if 10 was selected as the threshold, then whenever a function experienced a wait time of 10 milliseconds or higher in a system call, those runs would be considered as a fail run and vice versa.
-   - For referencing to the next section, we will be using `esddata.csv` as the output file name.
+The findings from [serverfault](https://serverfault.com/questions/316951/why-might-ls-color-always-be-slow-for-a-small-directory) and [bugzilla](https://bugzilla.redhat.com/show_bug.cgi?id=1290036) further validates our method, as they also mentioned that disabling color coding for 'ls' significantly improves its performance which aligns with our method's findings.
 
 
-### Analysis
-Once we have the `esddata.csv` file, which will be in a `comma-separated values (CSV)` format, this file could be opened in MS Excel or LibreOffice Calc to visualize and perform sorting. Once it is loaded in a spread sheet viewing tool, you can sort (in descending order) the output based on `Increase` to find the ranked list of prospective, suspicious and potentially problematic functions that need to be monitored for performance issues. This `esddata` file could also be used with other scripts for performing your own analysis.
-
-## Notes
-- If the addresses converted to names show no function names, then it is highly likely that the `ac_add_options --enable-perf` option for mozconfig was not correctly setup during the firefox build.
-- Address to name translation might take a long time if perf data was too large. We recommend not running `perf record` for more than 5 seconds for evaluation and review purposes of this artifact.
-- Average time to complete ESD as well as address to name translation for roughly 1GB perf script output file is around 1hr. So, it must be kept under 200 MB (by reducing perf record time) for faster review.
