@@ -1,24 +1,5 @@
 # PASD: A Performance Analysis Approach Through the Statistical Debugging of Kernel Events
 
-## Authors:
-Mohammed Adib Khan\
-Department of Computer Science\
-Brock University\
-St. Catharines, Canada\
-ak19qp@brocku.ca
-
-Morteza Noferesti\
-Department of Computer Science\
-Brock University\
-St. Catharines, Canada\
-mnoferesti@brocku.ca
-
-Naser Ezzati-Jivan\
-Department of Computer Science\
-Brock University\
-St. Catharines, Canada\
-nezzati@brocku.ca
-
 ## Abstract:
 Dynamic performance analysis is vital for optimizing systems and finding performance bottlenecks. Traditional debugging struggles to locate issues in complex software due to hidden performance problems during execution. This artifact uses PASD (Performance Analysis through Statistical Debugging), which analyzes kernel-level trace events without altering application code. It identifies key functions causing performance problems, maintaining normal software operations, and avoiding added complexity. PASD offers deep insights into kernel-level behavior, helping developers pinpoint bottlenecks, enhance efficiency, and improve software quality, user satisfaction, and system stability.
 
@@ -108,3 +89,22 @@ Processor: Intel i3 2.5 GHz
 - If the addresses converted to names show no function names, then it is highly likely that the `ac_add_options --enable-perf` option for mozconfig was not correctly setup during the firefox build.
 - Address to name translation might take a long time if perf data was too large. We recommend not running `perf record` for more than 5 seconds for evaluation and review purposes of this artifact.
 - Average time to complete ESD as well as address to name translation for roughly 1GB perf script output file is around 1hr. So, it must be kept under 200 MB (by reducing perf record time) for faster review.
+
+## Authors:
+Mohammed Adib Khan\
+Department of Computer Science\
+Brock University\
+St. Catharines, Canada\
+ak19qp@brocku.ca
+
+Morteza Noferesti\
+Department of Computer Science\
+Brock University\
+St. Catharines, Canada\
+mnoferesti@brocku.ca
+
+Naser Ezzati-Jivan\
+Department of Computer Science\
+Brock University\
+St. Catharines, Canada\
+nezzati@brocku.ca
