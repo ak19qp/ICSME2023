@@ -105,7 +105,7 @@ Some resources to translate addresses to function names: [addr2line](https://man
 
 - For a Fixed threshold method `(threshold_type = 2)`, execute the following command in the terminal:
 
-  `python3 perf_perser_and_esd.py [enter output file name] 2 [enter threshold here in milliseconds]`
+  `python3 perf_perser_and_esd.py [enter output file name] 2 [enter threshold here in milliseconds]`\
   As an example, if 10 was selected as the threshold, then whenever a function experienced a wait time of 10 milliseconds or higher in a system call, those runs would be considered as a fail run and vice versa.
   
 - For referencing to the next section, we will be using `esddata` as the output file name.
