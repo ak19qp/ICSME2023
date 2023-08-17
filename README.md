@@ -58,6 +58,15 @@ For data collection, it must be ensured that `Python3`, `Pip` and `Perf` is inst
 ### Performance Debugging
 For performance debugging, the application that needs to be analyzed has to be setup with debugger info/symbols enabled (which can be done if you have access to its binaries), or the application compilation method must support perf options. Without either of them performance debugging becomes difficult as we will not have access to the names of the functions from the call stack data, but rather the hex address values of those functions in the memory at the time of data collection.
 
+1. Setup the application accordingly so that call stack data could be translated to the function names.
+2. Download the python script `perf_perser_and_esd.py` from this repository into a folder (put it in the same folder where you would want to store your perf record data).
+
+Some resources to translate addresses to function names:
+[addr2line](https://manpages.ubuntu.com/manpages/focal/en/man1/alpha-linux-gnu-addr2line.1.html)
+[nm](https://www.ibm.com/docs/en/zos/2.5.0?topic=scd-nm-display-symbol-table-object-library-executable-files)
+
+
+
 ## Setup
 
 1. Perf:
