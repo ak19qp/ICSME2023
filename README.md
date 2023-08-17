@@ -120,7 +120,7 @@ We have provided three of the use case's data mentioned in the paper in this rep
 
 [Use Case 1](https://github.com/ak19qp/ICSME2023/tree/main/Use%20Cases/Use%20Case%201)\
 [Use Case 2](https://github.com/ak19qp/ICSME2023/tree/main/Use%20Cases/Use%20Case%202)\
-[Use Case 3](https://github.com/ak19qp/ICSME2023/tree/main/Use%20Cases/Use%20Case%203)\
+[Use Case 3](https://github.com/ak19qp/ICSME2023/tree/main/Use%20Cases/Use%20Case%203)
 
 ## Authors:
 Mohammed Adib Khan\
