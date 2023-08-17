@@ -1,20 +1,16 @@
-# Case Study 1: Firefox CSS Animation Rendering Bug
+# Use Case: Firefox CSS Animation Rendering Bug
 
 In this use case, we will examine a performance bug reported for Firefox within Mozilla's [Bugzilla repository](https://bugzilla.mozilla.org/show_bug.cgi?id=1637586). According to the report, Firefox encounters severe performance degradation during the rendering of CSS animations; a task handled quite competently by its contemporaneous browser counterparts. Despite the initial reporting of this performance bug dating back several years, the issue persistently remains unresolved. The report identifies functions within the GFX Web Renderer class as harboring the malfeasant functions responsible for this issue. Our proposed methodology has successfully corroborated this assertion by detecting the functions from the same culpable class.
 
 ## TL;DR Note:
-If you just want to evaluate our `perf_perser_and_esd.py` script without going through the process of building Firefox and recording the perf data, then please download the `pcsdata.txt` file from this case study folder and run the following command in the terminal:
+If you just want to evaluate our `perf_perser_and_esd.py` script without going through the process of building Firefox and recording the perf data, then please follow the TL;DR sections of [Use Case: "ls" Slow Performance in Large Directories](https://github.com/ak19qp/ICSME2023/tree/main/Use%20Cases/ls_bug) or [Use Case: Firefox Tripadvisor.ca CPU Exhaustion Bug](https://github.com/ak19qp/ICSME2023/tree/main/Use%20Cases/mozilla_firefox_bug_2)
 
-### For Mean+Stdev as threshold:
-`python3 perf_perser_and_esd.py pcsdata.txt esddata.csv 1`
-
-### For fixed threshold:
-`python3 perf_perser_and_esd.py pcsdata.txt esddata.csv 2 [enter threshold here in milliseconds]`
+The raw perf data of this use case is too huge to complete evaluation within 1hr.
 
 
-## Case Study Setup
+## Use Case Setup
 
-In the context of this case study, we have reproduced the bug reported in the [Bugzilla report](https://bugzilla.mozilla.org/show_bug.cgi?id=1637586). The [3D CSS animation](https://looping-squares.superhi.com/) was repeatedly loaded in Firefox to unveil all potential functions correlated with a system call for performing this task. The Firefox browser employed for this investigation was compiled from the source with the 'perf' flag enabled, thus enabling Just-In-Time (JIT) profiling following the Firefox documentation by Mozilla.
+In the context of this use case, we have reproduced the bug reported in the [Bugzilla report](https://bugzilla.mozilla.org/show_bug.cgi?id=1637586). The [3D CSS animation](https://looping-squares.superhi.com/) was repeatedly loaded in Firefox to unveil all potential functions correlated with a system call for performing this task. The Firefox browser employed for this investigation was compiled from the source with the 'perf' flag enabled, thus enabling Just-In-Time (JIT) profiling following the Firefox documentation by Mozilla.
 
 ### Setting-up Firefox:
 
@@ -83,7 +79,23 @@ In the context of this case study, we have reproduced the bug reported in the [B
 
 
 ### Analysis
-Once we have the `esddata.csv` file, which will be in a `comma-separated values (CSV)` format, this file could be opened in MS Excel or LibreOffice Calc to visualize and perform sorting. Once it is loaded in a spread sheet viewing tool, you can sort (in descending order) the output based on `Increase` to find the ranked list of prospective, suspicious and potentially problematic functions that need to be monitored for performance issues. This `esddata` file could also be used with other scripts for performing your own analysis.
+Once we have the `esddata.csv` file, which will be in a `comma-separated values (CSV)` format, this file could be opened in MS Excel or LibreOffice Calc to visualize and perform sorting. Once it is loaded in a spread sheet viewing tool, you can sort (in descending order) the output based on `Increase` to find the ranked list of prospective, suspicious and potentially problematic functions that need to be monitored for performance issues. This `esddata.csv` file could also be used with other scripts for performing your own analysis.
+
+## Discussion
+After collecting the trace events, the performance metric is defined, which in this case is the system call duration, calculated from the timestamp difference between entry and exit of the respective system calls. Based on this metric and the call stack data provided by Perf, the failure or success label is assigned to the call stack. In this use case, 1316 unique functions are identified. For each function, statistical debugging metrics (Failure, Context, and Increase) are calculated. The Increase value of the functions are then used to sort and rank the functions. A cut-off value is then applied, disregarding anything below the top 15% of the list. This reveals the functions that are more directly implicated in failures, with the most significant ones appearing at the very top of the list. Table I highlights the culprit functions responsible for the performance bugs found in the ranked cut-off list.
+
+![Table: Results](https://github.com/ak19qp/ICSME2023/blob/main/Use%20Cases/mozilla_firefox_bug_1/cs1_table.PNG)
+
+Through our use case, we have recognized the substantial value of applying statistical debugging techniques, specifically using runtime data of kernel events such as system call waiting time, to uncover critical functions that impact the performance of CSS animation rendering in Firefox. Table I presents the results of the proposed PASD, which identifies three crucial Firefox functions in the `WebRenderCommandBuilder` class, matching the findings reported in [Bugzilla](https://bugzilla.mozilla.org/show\_bug.cgi?id=1637586). This external validation enhances the credibility and reliability of our findings, ensuring internal consistency.
+
+It is important to note that in statistical debugging, 'Increase' values can occasionally be negative, as demonstrated in Table I.However, we do not exclude functions that exhibit a negative 'Increase' value, since this metric is only employed for the purpose of ranking potential functions, not for any other analytical process.
+
+Given that our analysis is based solely on runtime function calls and does not have access to the code branches (as defined by original definitions of predicates), it is feasible to observe negative 'Increase' values, even for functions that are the root cause of issues. this arises due to two main reasons outlined below:
+- Interactions with other predicates: The negative 'Increase' value of a specific predicate may be influenced by interactions with other predicates or conditions in the code.
+- Hidden dependencies: Certain predicates may have hidden dependencies or indirect effects on failures. These dependencies may not be immediately apparent and can result in a negative 'Increase' value.
+
+Therefore, irrespective of the 'Increase' value being positive, zero, or negative, we do not directly use it to discard candidate functions. Instead, we employ it to only sort and rank the list of candidate functions.
+
 
 ## Notes
 - If the addresses converted to names show no function names, then it is highly likely that the `ac_add_options --enable-perf` option for mozconfig was not correctly setup during the firefox build.
