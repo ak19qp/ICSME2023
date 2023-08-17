@@ -4,7 +4,7 @@ In this use case, we analyze a performance bug reported in [Bugzilla](https://bu
 
 ## TL;DR Note:
 
-If you just want to evaluate our `perf_perser_and_esd.py` script without going through the process of building Firefox and recording the perf data, then please download the data folder from this use case folder and run the following command in the terminal from within the data folder directory:
+If you just want to evaluate our `perf_perser_and_esd.py` script without going through the process of building Firefox and recording the perf data, then please download the data folder from this use case folder which already contains the perf data for this use case and run the following command in the terminal from within the data folder directory:
 
 `cat case_study_2_* > case_study_2.tar.gz`
 
