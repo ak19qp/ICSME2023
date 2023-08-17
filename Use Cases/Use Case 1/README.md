@@ -2,6 +2,15 @@
 
 In this use case, we will examine a performance bug reported for Firefox within Mozilla's [Bugzilla repository](https://bugzilla.mozilla.org/show_bug.cgi?id=1637586). According to the report, Firefox encounters severe performance degradation during the rendering of CSS animations; a task handled quite competently by its contemporaneous browser counterparts. Despite the initial reporting of this performance bug dating back several years, the issue persistently remains unresolved. The report identifies functions within the GFX Web Renderer class as harboring the malfeasant functions responsible for this issue. Our proposed methodology has successfully corroborated this assertion by detecting the functions from the same culpable class.
 
+## TLDR Note
+If you just want to evaluate our `perf_perser_and_esd.py` script without going through the process of building Firefox and recording the perf data, then please download the pcsdata.txt file from here and run the following command in the terminal:
+
+### For Mean+Stdev as threshold:
+`python3 perf_perser_and_esd.py pcsdata.txt esddata.csv 1`
+
+### For fixed threshold:
+`python3 perf_perser_and_esd.py pcsdata.txt esddata.csv 2 [enter threshold here in milliseconds]`
+
 
 ## Case Study Setup
 
@@ -70,11 +79,11 @@ In the context of this case study, we have reproduced the bug reported in the [B
    - For a Fixed threshold method `(threshold_type = 2)`, execute the following command in the terminal:
      `python3 perf_perser_and_esd.py [pcsdata/input file name] [output file name] 2 [enter threshold here in milliseconds]`\
      As an example, if 10 was selected as the threshold, then whenever a function experienced a wait time of 10 milliseconds or higher in a system call, those runs would be considered as a fail run and vice versa.
-   - For referencing to the next section, we will be using `esddata` as the output file name.
+   - For referencing to the next section, we will be using `esddata.csv` as the output file name.
 
 
 ### Analysis
-- This script will calculate execution time / wait time of system calls, the functions which made the system calls by analyzing the call stacks, and finally perform enhanced statistical debugging and generate a csv output. You can sort the output based on `Increase` using MS Excel or LibreOffice Calc to find the ranked list of prospective and suspicious and potentially problematic functions that need to be monitored for performance issues.
+Once we have the `esddata.csv` file, which will be in a `comma-separated values (CSV)` format, this file could be opened in MS Excel or LibreOffice Calc to visualize and perform sorting. Once it is loaded in a spread sheet viewing tool, you can sort (in descending order) the output based on `Increase` to find the ranked list of prospective, suspicious and potentially problematic functions that need to be monitored for performance issues. This `esddata` file could also be used with other scripts for performing your own analysis.
 
 ## Notes
 - If the addresses converted to names show no function names, then it is highly likely that the `ac_add_options --enable-perf` option for mozconfig was not correctly setup during the firefox build.
