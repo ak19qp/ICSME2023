@@ -1,6 +1,6 @@
 # PASD: A Performance Analysis Approach Through the Statistical Debugging of Kernel Events
 
-Dynamic performance analysis is vital for optimizing systems and finding performance bottlenecks. Traditional debugging struggles to locate issues in complex software due to hidden performance problems during execution. This artifact uses PASD (Performance Analysis through Statistical Debugging), which analyzes kernel-level trace events without altering application code. It identifies key functions causing performance problems, maintaining normal software operations, and avoiding added complexity. PASD offers deep insights into kernel-level behavior, helping developers pinpoint bottlenecks, enhance efficiency, and improve software quality, user satisfaction, and system stability.
+Dynamic performance analysis is vital for optimizing systems and finding performance bottlenecks. Traditional debugging struggles to locate issues in complex software due to hidden performance problems during execution. This artifact uses PASD (Performance Analysis through Statistical Debugging), which analyzes kernel-level trace events without altering application code. It identifies and reports key functions causing performance problems, maintaining normal software operations, and avoiding added complexity. PASD offers deep insights into kernel-level behavior, helping developers pinpoint bottlenecks, enhance efficiency, and improve software quality, user satisfaction, and system stability.
 
 ## This repository contains the artifact needed for:
 
