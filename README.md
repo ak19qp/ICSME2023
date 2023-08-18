@@ -33,7 +33,7 @@ Pip for Python package installations
 
 ## Environment Setup
 
-### Data Collection
+### Step1: Data Collection
 For data collection, it must be ensured that `Python3`, `Pip` and `Perf` is installed in the machine. Below are the instructions to set them up for Ubuntu:
 
 1. Python3:
@@ -64,7 +64,7 @@ For data collection, it must be ensured that `Python3`, `Pip` and `Perf` is inst
      
    - To verify the installation, type in `perf` again in the terminal.
 
-### Performance Debugging
+### Step2: Performance Debugging
 For performance debugging, the application that needs to be analyzed has to be setup with debugger info/symbols enabled (which can be done if you have access to its binaries), or the application compilation method must support perf options. Without either of them performance debugging becomes difficult as we will not have access to the names of the functions from the call stack data, but rather the hex address values of those functions in the memory at the time of data collection.
 
 1. Setup the application accordingly so that call stack data could be translated to the function names.
@@ -75,7 +75,7 @@ Some resources to translate addresses to function names: [addr2line](https://man
 
 ## PASD Process
 
-### Data Collection
+### Step1: Data Collection
 - Our script currently support system calls, however, it could be easily extended to support various other kernel events. Therefore, for data collection we will show an example to collect system calls and their relevant call stack data with perf below.
 
 - Open a terminal in the directory where you have downloaded the `perf_perser_and_esd.py` python script. We need to find the PID of the application that we want to collect data for which can be done multiple different ways. Here is a simple way to do so:
@@ -95,7 +95,7 @@ Some resources to translate addresses to function names: [addr2line](https://man
   This will convert the perf data into human readable call stack data. For referencing to the next sections, we will name this file as `pcsdata` representing perf call stack data.
 
 
-### Enhanced Statistical Debugging (ESD)
+### Step2: Enhanced Statistical Debugging (ESD)
 - For performing ESD, we need the `pcsdata` file, a threshold method (1. Mean+Stdv, 2. Fixed) and the `perf_perser_and_esd.py` python script from this repository.
 
 - For Mean+Stdv threshold method `(threshold_type = 1)`, execute the following command in the terminal:
@@ -110,7 +110,7 @@ Some resources to translate addresses to function names: [addr2line](https://man
   
 - For referencing to the next section, we will be using `esddata` as the output file name.
 
-### Analysis
+### Step3: Analysis
 Once we have the `esddata` file, which will be in a `comma-separated values (CSV)` format, this file could be opened in MS Excel or LibreOffice Calc to visualize and perform sorting. Once it is loaded in a spread sheet viewing tool, you can sort (in descending order) the output based on `Increase` to find the ranked list of prospective, suspicious and potentially problematic functions that need to be monitored for performance issues. This `esddata` file could also be used with other scripts for performing your own analysis.
 
 
