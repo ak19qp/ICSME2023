@@ -27,7 +27,7 @@ Processor: Intel i3 2.5 GHz
 ### Software Requirements:
 
 Perf (Linux Perf)\
-Firefox built with perf options enabled\
+Spreadsheet app (MS Excel, LibreOffice Calc, etc.)\
 Python3\
 Pip for Python package installations
 
