@@ -1,8 +1,27 @@
 import re
 import statistics
 import math
+import sys
+
+
+try:
+
+    if len(sys.argv) < 4:
+        print("Some arguments are missing.")
+        sys.exit()
+    elif len(sys.argv) == 5 and int(sys.argv[3]) == 2 and int(sys.argv[4])<0:
+        print("Invalid threshold. Must be greater than 0.")
+        sys.exit()
+    elif len(sys.argv) == 4 and int(sys.argv[3]) == 2:
+        print("Fixed threshold not mentioned.")
+        sys.exit()
+except:
+    print("Correct format: \n[input file] [output file] [1: mean+stdv threshold or 2: fixed value in millisecond] [millisecond if fixed threshold is used]")
+    sys.exit()
+
 
 print("Start")
+
 
 
 #type 1: mean+stdv
@@ -11,6 +30,18 @@ threshold_type=2
 
 # if type 1 is selected then this value will be ignored.
 threshold_value_for_type_2 = 10
+
+
+input_file = sys.argv[1]
+output_file = sys.argv[2]
+th_type = int(sys.argv[3])
+
+if th_type>1:
+    threshold_value_for_type_2 = int(sys.argv[4])
+else:
+    threshold_type = 1
+
+
 
 syscall = []
 
@@ -35,7 +66,7 @@ print("Reading from file...")
 
 
 #change this file name to the perf script output file name
-with open("test.txt") as file:
+with open(input_file) as file:
 
     mode_enter = False
 
@@ -210,7 +241,7 @@ total = success + fail + forget
 print("Writing to file...")
 
 
-f = open("stats_with_addr.csv", "w")
+f = open(output_file+"_with_address.csv", "w")
 f.write("Function,Total_Syscalls,Total_Syscalls_Success,Total_Syscalls_Failed,Min,Max,Average,Stdev,Failure,Context,Increase\n")
 for i in range(len(unique_functions)):
 
@@ -274,15 +305,15 @@ print("Converting addresses to names...")
 
 tracefile = []
 
-with open("test.txt") as file:
+with open(input_file) as file:
 
     for line in file:
         tracefile.append(line)
 
 
-a = open("stats_with_name.csv", "w")
+a = open(output_file, "w")
 
-with open("stats_with_addr.csv") as file:
+with open(output_file+"_with_address.csv") as file:
 
     is_heading = True
     for line in file:
