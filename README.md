@@ -13,7 +13,7 @@ To read our accepted paper at the 23rd IEEE International Working Conference on 
 
 ### Performance Debugging:
 - Define threshold to differentiate success and fail runs.
-- Find fail, fail observed, success and success ovserved for each unique functions.
+- Find fail, fail observed, success and success observed for each unique functions.
 - Perform Enhanced Statistical Debugging (ESD) on the functions' data.
 - Rank the suspicious/problematic application functions responsible for performance issues based on the ESD data.
 
